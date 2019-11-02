@@ -1,0 +1,79 @@
+version: '3.6'
+
+services:
+
+  mariadb10:
+    image: mariadb:10.4.8
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    volumes:
+    - ./mariadb10:/var/lib/mysql
+    environment:
+    - MYSQL_ROOT_PASSWORD=test
+    - MYSQL_DATABASE=test
+    - MYSQL_USER=test
+    - MYSQL_PASSWORD=test
+
+  mysql5:
+    image: mysql:5.7.24
+    restart: always
+    volumes:
+    - ./mysql5:/var/lib/mysql
+    environment:
+    - MYSQL_ROOT_PASSWORD=test
+    - MYSQL_DATABASE=test
+    - MYSQL_USER=test
+    - MYSQL_PASSWORD=test
+
+
+  mysql8:
+    image: mysql:8.0.18
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    volumes:
+    - ./mysql8:/var/lib/mysql
+    environment:
+    - MYSQL_ROOT_PASSWORD=test
+    - MYSQL_DATABASE=test
+    - MYSQL_USER=test
+    - MYSQL_PASSWORD=test
+
+
+  phpmyadmin-mariadb:
+    image: phpmyadmin/phpmyadmin:4.8.5
+    restart: always
+    depends_on:
+    - mariadb10
+    environment:
+    - PMA_HOST=mariadb10
+    - PMA_PORT=3306
+    - PMA_USER=test
+    - PMA_PASSWORD=test
+    ports:
+    - "3001:80"
+
+  phpmyadmin-mysql5:
+    image: phpmyadmin/phpmyadmin:4.8.5
+    restart: always
+    depends_on:
+    - mysql5
+    environment:
+    - PMA_HOST=mysql5
+    - PMA_PORT=3306
+    - PMA_USER=test
+    - PMA_PASSWORD=test
+    ports:
+    - "3002:80"
+
+  phpmyadmin-mysql8:
+    image: phpmyadmin/phpmyadmin:4.8.5
+    restart: always
+    depends_on:
+    - mysql8
+    environment:
+    - PMA_HOST=mysql8
+    - PMA_PORT=3306
+    - PMA_USER=test
+    - PMA_PASSWORD=test
+    ports:
+    - "3003:80"
